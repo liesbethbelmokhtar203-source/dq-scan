@@ -1,0 +1,6 @@
+order_id,amount,currency
+1,12.50,EUR
+2,,EUR
+3,99.00,USD
+4,-3.20,EUR
+5,0.00,EUR
