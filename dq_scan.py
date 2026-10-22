@@ -8,12 +8,19 @@ from collections import Counter
 
 def scan(path, delim=","):
     with open(path, newline="", encoding="utf-8", errors="replace") as f:
-        rows = list(csv.DictReader(f, delimiter=delim))
+        reader = csv.DictReader(f, delimiter=delim)
+        cols = list(dict.fromkeys(reader.fieldnames or []))
+        rows = list(reader)
     if not rows:
         print("empty file (no rows / no header)")
         return 1
 
-    cols = list(rows[0].keys())
+    malformed = sum(None in row or any(v is None for v in row.values())
+                    for row in rows)
+    if malformed:
+        print(f"warning: {malformed} row(s) have extra or missing fields; "
+              "extra fields ignored, missing fields counted as nulls",
+              file=sys.stderr)
     print(f"{len(rows)} rows, {len(cols)} columns\n")
 
     for c in cols:

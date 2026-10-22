@@ -25,6 +25,9 @@ python3 dq_scan.py path/to/export.csv
     top: [('EUR', 44000), ('USD', 800), ('GBP', 223)]
 ```
 
+Rows with extra or missing fields produce a warning on stderr. The scan keeps
+the header's columns, ignores extra fields, and counts missing fields as nulls.
+
 ## Why
 
 pandas takes 2 seconds and 300 MB to tell me a column is 70% null. This takes
