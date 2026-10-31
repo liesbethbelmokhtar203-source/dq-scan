@@ -40,8 +40,21 @@ def scan(path, delim=","):
     return 0
 
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv[1:]
+    if not argv:
         print("usage: dq-scan <file.csv>")
-        sys.exit(1)
-    sys.exit(scan(sys.argv[1]))
+        return 1
+    try:
+        return scan(argv[0])
+    except OSError as error:
+        print(f"error: unable to read {argv[0]}: {error.strerror or error}",
+              file=sys.stderr)
+    except csv.Error as error:
+        print(f"error: invalid CSV in {argv[0]}: {error}", file=sys.stderr)
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
